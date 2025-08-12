@@ -1,0 +1,10 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@cool-pos/shared-types": ["libs/shared-types/src/index.ts"]
+    }
+  }
+}
