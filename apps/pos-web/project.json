@@ -4,6 +4,46 @@
   "sourceRoot": "apps/pos-web",
   "projectType": "application",
   "tags": [],
-  "// targets": "to see all targets run: nx show project pos-web --web",
-  "targets": {}
+  "targets": {
+    "build": {
+      "executor": "@nx/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "root": "apps/pos-web",
+        "outputPath": "dist/apps/pos-web"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "root": "apps/pos-web",
+        "dev": true
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "pos-web:build:production",
+          "dev": false,
+          "port": 4200
+        },
+        "development": {
+          "buildTarget": "pos-web:build",
+          "dev": true,
+          "port": 4200
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/pos-web/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
 }
