@@ -3,6 +3,15 @@
   "compilerOptions": {
     "rootDir": ".",
     "baseUrl": ".",
+    "target": "ES2019",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "paths": {
       "@cool-pos/shared-types": ["libs/shared-types/src/index.ts"]
     }
