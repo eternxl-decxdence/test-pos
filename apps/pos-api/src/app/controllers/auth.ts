@@ -20,14 +20,17 @@ export class AuthController {
   @Post('login')
   async login(@Res({ passthrough: true }) res: Response, @Body() body: { username; password }) {
     // Po poprawnym loginie ustawiamy cookie z refresh tokenem oraz zwracamy access token
-    const { accessToken, refreshToken } = await this.authService.login(body.username, body.password)
+    const { accessToken, refreshToken, greetname } = await this.authService.login(
+      body.username,
+      body.password,
+    )
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: true,
       path: '/',
       maxAge: 7 * 24 * 60 * 60,
     })
-    return { accessToken }
+    return { accessToken, greetname }
   }
 
   @Public()

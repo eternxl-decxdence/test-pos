@@ -69,7 +69,7 @@ export class AuthService {
     }
 
     const accessToken = this.JwtService.sign({ sub: user.id })
-    return { accessToken, refreshToken: refreshToken.token }
+    return { accessToken, greetname: user.greetname, refreshToken: refreshToken.token }
   }
 
   // Odświeżanie access tokena przy pomocy refresh tokena

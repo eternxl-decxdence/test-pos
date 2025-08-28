@@ -8,6 +8,7 @@ import useLogin from '@utils/useLogin'
 import { FormEvent, useState } from 'react'
 import { observer } from 'mobx-react'
 import { authStore } from '@store/AuthStore'
+import { userStore } from '@store/UserStore'
 const LoginForm = observer(() => {
   const router = useRouter()
   const login = useLogin()
@@ -26,6 +27,7 @@ const LoginForm = observer(() => {
         {
           onSuccess: (data) => {
             authStore.setAccessToken(data.accessToken)
+            userStore.setGreet(data.greetname)
             router.push('/shop/dashboard')
           },
           onError: (data) => setErrorStatus(data.message),
