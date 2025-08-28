@@ -16,7 +16,7 @@ export class AuthService {
   constructor(private JwtService: JwtService, private prisma: PrismaClient) {}
 
   // Rejestracja nowego użytkownika — wymaga master tokena do zabezpieczenia tworzenia kont
-  async register(username: string, password: string, masterToken: string) {
+  async register(username: string, password: string, greetname: string, masterToken: string) {
     if (masterToken !== process.env.MASTER_TOKEN)
       throw new ForbiddenException('Invalid master token')
 
@@ -30,6 +30,7 @@ export class AuthService {
 
     const user = await this.prisma.user.create({
       data: {
+        greetname,
         username,
         password: hash,
       },

@@ -3,4 +3,7 @@ export interface IInput {
   placeholder: string
   inputName: string
   label: string
+  variant: 'default' | 'error'
+
+  handleChange: (...args: any[]) => any
 }

@@ -11,9 +11,9 @@ export class AuthController {
 
   @Public()
   @Post('register')
-  async register(@Body() body: { username; password; masterToken }) {
+  async register(@Body() body: { username; password; greetname; masterToken }) {
     // Delegujemy logikę rejestracji do serwisu
-    return this.authService.register(body.username, body.password, body.masterToken)
+    return this.authService.register(body.username, body.password, body.greetname, body.masterToken)
   }
 
   @Public()

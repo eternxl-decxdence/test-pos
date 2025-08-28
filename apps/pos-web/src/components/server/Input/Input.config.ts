@@ -17,6 +17,14 @@ const config = createConfig({
         sizing: 'text-xs w-full',
       },
     },
+    'input-error': {
+      styles: {
+        layout: 'p-2',
+        colors: 'outline-rose-700 bg-rose-50 focus:outline-rose-500',
+        animation: 'transition-all duration-100',
+        sizing: 'w-full outline-1 rounded-md focus:outline-2 hover:outline-2',
+      },
+    },
   },
 })
 
