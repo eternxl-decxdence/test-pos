@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { clearInterval } from 'timers'
+import { setInterval, clearInterval } from 'timers'
 import config from './DateTimeWidget.config'
 
 export default function DateTimeWidget() {
@@ -18,7 +18,7 @@ export default function DateTimeWidget() {
       <span>
         {`${time.getHours()}`}
         <span className="animate-pulse"> : </span>
-        {`${time.getMinutes()}`}
+        {`${time.getMinutes() > 10 ? '' : '0'}${time.getMinutes()}`}
       </span>
     </div>
   )
