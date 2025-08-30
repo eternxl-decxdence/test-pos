@@ -23,7 +23,7 @@ model User {
 
 model Product {
   id         String         @id @default(uuid())
-  externalId Int    @unique
+  externalId String?        @unique
   categoryId String
   imageId    String
   name       String
@@ -36,29 +36,36 @@ model Product {
 
 model Category {
   id           String    @id @default(uuid())
-  categoryName String @unique
+  categoryName String    @unique
   products     Product[]
 }
 
 model Image {
   id       String    @id @default(uuid())
-  link     String 
+  link     String
   products Product[]
 }
 
 model Order {
-  id       String         @id @default(uuid())
-  products OrderProduct[]
+  id         String         @id @default(uuid())
+  externalId String?        @unique
+  date       DateTime       @default(now())
+  cashAmount Decimal        @default(0) @db.Decimal(10, 2)
+  cardAmount Decimal        @default(0) @db.Decimal(10, 2)
+  products   OrderProduct[]
 }
 
 model OrderProduct {
-  id        String  @id @default(uuid())
-  orderId   String
-  productId String
-  quantity  Int
-  price     Decimal @db.Decimal(10, 2)
-  order     Order   @relation(fields: [orderId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
+  id         String  @id @default(uuid())
+  orderId    String
+  externalId String?
+  productId  String
+  quantity   Int
+  price      Decimal @db.Decimal(10, 2)
+  order      Order   @relation(fields: [orderId], references: [id])
+  product    Product @relation(fields: [productId], references: [id])
+
+  @@unique([orderId, productId, quantity, price])
 }
 
 model RefreshToken {

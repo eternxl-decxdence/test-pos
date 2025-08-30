@@ -1,4 +1,4 @@
-import { AuthController } from './auth'
+import { AuthController } from '../auth'
 
 // Testy jednostkowe dla AuthController - sprawdza, czy deleguje do serwisu i ustawia cookie
 describe('AuthController', () => {

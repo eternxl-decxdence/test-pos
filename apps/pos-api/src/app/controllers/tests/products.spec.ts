@@ -1,4 +1,5 @@
-import { ProductsController } from './products'
+import { ProductsService } from '../../services/products'
+import { ProductsController } from '../products'
 
 // PL: Testy jednostkowe kontrolera ProductsController
 // PL: Metody kontrolera delegują logikę do ProductsService — tutaj używamy atrap (mock) dla serwisu
@@ -22,7 +23,7 @@ describe('ProductsController', () => {
 
   it('sync - wywołuje synchronizację i zwraca wynik serwisu', async () => {
     // PL: Przygotowujemy atrapę odpowiedzi serwisu
-    ;(mockService.syncProducts as jest.Mock).mockResolvedValue({ message: 'ok' })
+    ; (mockService.syncProducts as jest.Mock).mockResolvedValue({ message: 'ok' })
 
     const res = await controller.sync()
 
@@ -34,7 +35,7 @@ describe('ProductsController', () => {
     const body = { name: 'P', imageUrl: 'url', price: 5, quantity: 1, category: { new: true, descriptor: 'C' } }
     // PL: Serwis zwraca obiekt z polem price jako obiekt z metodą toNumber (tak jak Prisma.Decimal)
     const product = { id: 'p1', price: { toNumber: () => 5 } }
-    ;(mockService.addProduct as jest.Mock).mockResolvedValue(product)
+      ; (mockService.addProduct as jest.Mock).mockResolvedValue(product)
 
     const res = await controller.addProduct(body)
 
@@ -48,7 +49,7 @@ describe('ProductsController', () => {
       { id: 'p1', price: { toNumber: () => 10 }, name: 'A' },
       { id: 'p2', price: { toNumber: () => 20 }, name: 'B' },
     ]
-    ;(mockService.getProducts as jest.Mock).mockResolvedValue(products)
+      ; (mockService.getProducts as jest.Mock).mockResolvedValue(products)
 
     const out = await controller.getProducts(10, 0, body)
 
@@ -58,7 +59,7 @@ describe('ProductsController', () => {
 
   it('deleteProduct - usuwa produkt i konwertuje price', async () => {
     const deleted = { id: 'p', price: { toNumber: () => 7 } }
-    ;(mockService.deleteProduct as jest.Mock).mockResolvedValue(deleted)
+      ; (mockService.deleteProduct as jest.Mock).mockResolvedValue(deleted)
 
     const res = await controller.deleteProduct({ productId: 'p' })
 
@@ -68,7 +69,7 @@ describe('ProductsController', () => {
 
   it('changeProduct - aktualizuje i zwraca zaktualizowany produkt z konwersją price', async () => {
     const updated = { id: 'p', price: { toNumber: () => 12 } }
-    ;(mockService.changeProduct as jest.Mock).mockResolvedValue(updated)
+      ; (mockService.changeProduct as jest.Mock).mockResolvedValue(updated)
 
     const body = { productId: 'p', changes: { name: 'New' } }
     const res = await controller.changeProduct(body)

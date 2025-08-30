@@ -1,4 +1,4 @@
-import { ShiftService } from './shift'
+import { ShiftService } from '../shift'
 import { PrismaClient } from '@prisma/client'
 import { NotFoundException } from '@nestjs/common'
 
@@ -21,7 +21,7 @@ describe('ShiftService', () => {
   })
 
   it('startShift - creates shift and returns id', async () => {
-    ;(mockPrisma.shift.create as jest.Mock).mockResolvedValue({ id: 's1' })
+    ; (mockPrisma.shift.create as jest.Mock).mockResolvedValue({ id: 's1' })
 
     const res = await svc.start(100)
 
@@ -35,18 +35,18 @@ describe('ShiftService', () => {
   })
 
   it('endShift - not found throws', async () => {
-    ;(mockPrisma.shift.findUnique as jest.Mock).mockResolvedValue(null)
+    ; (mockPrisma.shift.findUnique as jest.Mock).mockResolvedValue(null)
     await expect(svc.end(200, 'id')).rejects.toThrow(NotFoundException)
   })
 
   it('endShift - updates and returns updated shift', async () => {
     const existing = { id: 'id', openedAt: new Date(), cashStart: 100 }
-    ;(mockPrisma.shift.findUnique as jest.Mock).mockResolvedValue(existing)
-    ;(mockPrisma.shift.update as jest.Mock).mockResolvedValue({
-      id: 'id',
-      cashEnd: 200,
-      closedAt: new Date(),
-    })
+      ; (mockPrisma.shift.findUnique as jest.Mock).mockResolvedValue(existing)
+      ; (mockPrisma.shift.update as jest.Mock).mockResolvedValue({
+        id: 'id',
+        cashEnd: 200,
+        closedAt: new Date(),
+      })
 
     const res = await svc.end(200, 'id')
 
@@ -61,7 +61,7 @@ describe('ShiftService', () => {
     const day = '2025-08-20'
     const expectedDate = new Date(day + 'T00:00:00.000Z')
     const result = { id: 's2', openedAt: new Date() }
-    ;(mockPrisma.shift.findFirst as jest.Mock).mockResolvedValue(result)
+      ; (mockPrisma.shift.findFirst as jest.Mock).mockResolvedValue(result)
 
     const out = await svc.get(day)
 

@@ -6,7 +6,7 @@ import { ProductsService } from '@services/products'
 
 @Controller('/products')
 export class ProductsController {
-  constructor(private productsService: ProductsService) {}
+  constructor(private productsService: ProductsService) { }
 
   // PL: Synchronizuje produkty z zewnętrznego serwisu i zapisuje/aktualizuje wpisy w bazie.
   // PL: Nie przyjmuje danych w ciele żądania — wyzwala proces serwisowy i zwraca wynik operacji.

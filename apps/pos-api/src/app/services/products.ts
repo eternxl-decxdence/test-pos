@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { Prisma, PrismaClient } from '@prisma/client'
 import axios from 'axios'
-import { off } from 'process'
 
 // PL: Serwis produktów — operacje na produktach (synchronizacja z zewnętrznym API, CRUD)
 // PL: Używa PrismaClient do operacji na bazie danych i axios do pobierania danych z serwisu zewnętrznego
 
 @Injectable()
 export class ProductsService {
-  constructor(private prisma: PrismaClient) {}
+  constructor(private prisma: PrismaClient) { }
 
   // PL: Synchronizuje produkty z zewnętrznego API (https://fakestoreapi.com/products).
   // PL: Dla każdego produktu tworzy/aktualizuje kategorię, tworzy obraz i upsertuje produkt.
@@ -36,7 +35,7 @@ export class ProductsService {
         })
 
         await prisma.product.upsert({
-          where: { externalId: item.id },
+          where: { externalId: item.id.toString() },
           update: {},
           create: {
             name: item.title,
@@ -44,7 +43,7 @@ export class ProductsService {
             image: { connect: { id: image.id } },
             quantity: item.rating.count,
             price: new Prisma.Decimal(item.price),
-            externalId: item.id,
+            externalId: item.id.toString(),
           },
         })
       }
@@ -90,7 +89,6 @@ export class ProductsService {
       return prisma.product.create({
         data: {
           name,
-          externalId: Math.floor(Math.random() * (10000 - 1000) + 1000),
           quantity,
           price: new Prisma.Decimal(price),
           category: { connect: { id: productCategory.id } },

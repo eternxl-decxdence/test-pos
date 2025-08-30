@@ -1,4 +1,4 @@
-import { ShiftController } from './shift'
+import { ShiftController } from '../shift'
 
 // PL: Testy kontrolera shift - sprawdzamy, czy deleguje do serwisu
 describe('ShiftController', () => {
