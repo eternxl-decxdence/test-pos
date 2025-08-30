@@ -65,11 +65,11 @@ describe('ShiftService', () => {
 
     const out = await svc.get(day)
 
-    // Проверяем, что findFirst был вызван с правильными параметрами
+    // Sprawdzamy, że findFirst został wywołany z oczekiwanymi parametrami
     expect(mockPrisma.shift.findFirst).toHaveBeenCalled()
     const callArg = (mockPrisma.shift.findFirst as jest.Mock).mock.calls[0][0]
     expect(callArg.orderBy).toEqual({ openedAt: 'desc' })
-    // сравниваем время в миллисекундах
+    // porównujemy czas w milisekundach
     expect(callArg.where.openedAt.lt.getTime()).toBe(expectedDate.getTime())
     expect(out).toBe(result)
   })

@@ -6,9 +6,11 @@ import { ShiftModule } from '@modules/shift'
 import { APP_GUARD } from '@nestjs/core'
 import { JwtAuthGuard } from '@guards/auth'
 import { JwtModule } from '@nestjs/jwt'
+import { ProductsModule } from '@modules/products'
 
 @Module({
   imports: [
+    ProductsModule,
     AuthModule,
     ShiftModule,
     JwtModule.register({

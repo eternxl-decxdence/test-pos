@@ -14,16 +14,16 @@ datasource db {
 }
 
 model User {
-  id           String  @id @default(uuid())
-  greetname    String  
-  username     String  @unique
+  id           String         @id @default(uuid())
+  greetname    String
+  username     String         @unique
   password     String
   refreshToken RefreshToken[]
-  
 }
 
 model Product {
   id         String         @id @default(uuid())
+  externalId Int    @unique
   categoryId String
   imageId    String
   name       String
@@ -35,12 +35,14 @@ model Product {
 }
 
 model Category {
-  id       String    @id @default(uuid())
-  products Product[]
+  id           String    @id @default(uuid())
+  categoryName String @unique
+  products     Product[]
 }
 
 model Image {
   id       String    @id @default(uuid())
+  link     String 
   products Product[]
 }
 
@@ -61,18 +63,18 @@ model OrderProduct {
 
 model RefreshToken {
   id        String   @id @default(uuid())
-  userId    String  
+  userId    String
   token     String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
   revoked   Boolean  @default(false)
-  user      User     @relation(fields:[userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Shift {
-  id String @id @default(uuid())
-  cashStart Decimal @default(300) @db.Decimal(10,2)
-  cashEnd Decimal? @db.Decimal(10,2)
-  openedAt DateTime @default(now())
-  closedAt DateTime?
+  id        String    @id @default(uuid())
+  cashStart Decimal   @default(300) @db.Decimal(10, 2)
+  cashEnd   Decimal?  @db.Decimal(10, 2)
+  openedAt  DateTime  @default(now())
+  closedAt  DateTime?
 }

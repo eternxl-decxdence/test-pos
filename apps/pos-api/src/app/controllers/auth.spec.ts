@@ -16,18 +16,20 @@ describe('AuthController', () => {
 
   it('register delegates to service', async () => {
     mockService.register.mockResolvedValue({ ok: true })
+    // PL: dodajemy pole `greetname` zgodnie z nową sygnaturą
     await expect(
-      ctrl.register({ username: 'u', password: 'p', masterToken: 'm', greetname: 'n' }),
+      ctrl.register({ username: 'u', password: 'p', greetname: 'G', masterToken: 'm' }),
     ).resolves.toEqual({ ok: true })
-    expect(mockService.register).toHaveBeenCalledWith('u', 'p', 'n', 'm')
+    expect(mockService.register).toHaveBeenCalledWith('u', 'p', 'G', 'm')
   })
 
-  it('login sets cookie and returns accessToken', async () => {
-    mockService.login.mockResolvedValue({ accessToken: 'at', refreshToken: 'rt' })
+  it('login sets cookie and returns accessToken and greetname', async () => {
+    // PL: mock serwisu zwraca także greetname
+    mockService.login.mockResolvedValue({ accessToken: 'at', refreshToken: 'rt', greetname: 'G' })
     const res: any = { cookie: jest.fn() }
     const out = await ctrl.login(res, { username: 'u', password: 'p' })
     expect(res.cookie).toHaveBeenCalledWith('refreshToken', 'rt', expect.any(Object))
-    expect(out).toEqual({ accessToken: 'at' })
+    expect(out).toEqual({ accessToken: 'at', greetname: 'G' })
   })
 
   it('refresh delegates to service', async () => {
