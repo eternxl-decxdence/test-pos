@@ -23,7 +23,7 @@ export default function NavBar() {
   const baseURL = '/shop'
 
   return (
-    <aside className={config.logic.composeStyles('container')}>
+    <div className={config.logic.composeStyles('container')}>
       {tabs.map((tab) => {
         const isActive = currentPath.startsWith(baseURL + tab.link)
         return (
@@ -49,6 +49,6 @@ export default function NavBar() {
           </Link>
         )
       })}
-    </aside>
+    </div>
   )
 }
