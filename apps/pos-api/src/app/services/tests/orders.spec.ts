@@ -1,6 +1,3 @@
-// Plik testowy: services/orders.spec.ts
-// Testy jednostkowe dla OrderService. Komentarze po polsku wyjaśniają każdy test.
-
 import { OrderService } from '../orders';
 import { PrismaClient, Prisma } from '@prisma/client';
 import axios from 'axios';

@@ -8,9 +8,11 @@ import { JwtAuthGuard } from '@guards/auth'
 import { JwtModule } from '@nestjs/jwt'
 import { ProductsModule } from '@modules/products'
 import { OrderModule } from '@modules/order'
+import { ReportModule } from '@modules/reports'
 
 @Module({
   imports: [
+    ReportModule,
     OrderModule,
     ProductsModule,
     AuthModule,
