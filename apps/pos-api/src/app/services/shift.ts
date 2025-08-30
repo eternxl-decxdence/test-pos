@@ -1,0 +1,28 @@
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { Prisma, PrismaClient } from '@prisma/client'
+
+@Injectable()
+export class ShiftService {
+  constructor(private prisma: PrismaClient) {}
+
+  async start(cashStart: number) {
+    const shift = await this.prisma.shift.create({
+      data: {
+        openedAt: new Date(),
+        cashStart: cashStart,
+      },
+    })
+    return { shift: shift.id }
+  }
+  async end(cashEnd: number, shiftId: string) {
+    const shift = await this.prisma.shift.findUnique({ where: { id: shiftId } })
+    if (!shift) throw new NotFoundException('Zmiana z podanym id nie została znaleziona')
+    return this.prisma.shift.update({
+      where: { id: shift.id },
+      data: {
+        cashEnd: cashEnd,
+        closedAt: new Date(),
+      },
+    })
+  }
+}

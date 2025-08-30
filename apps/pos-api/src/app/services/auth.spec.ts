@@ -44,13 +44,19 @@ describe('AuthService', () => {
     ;(mockPrisma.user.findUnique as jest.Mock).mockResolvedValue(null)
     // korzystamy z zamockowanego bcrypt.hash
     ;(bcrypt.hash as unknown as jest.Mock).mockResolvedValue('hashed')
-    ;(mockPrisma.user.create as jest.Mock).mockResolvedValue({ id: '1', username: 'u' })
+    ;(mockPrisma.user.create as jest.Mock).mockResolvedValue({
+      id: '1',
+      username: 'u',
+      greetname: 'G',
+    })
 
-    const res = await svc.register('u', 'p', 'master')
+    // Teraz register oczekuje greetname jako trzeci argument
+    const res = await svc.register('u', 'p', 'G', 'master')
 
     expect(res).toHaveProperty('success', true)
     expect(mockPrisma.user.create).toHaveBeenCalledWith({
       data: {
+        greetname: 'G',
         username: 'u',
         password: 'hashed',
       },
@@ -58,7 +64,7 @@ describe('AuthService', () => {
   })
 
   it('register - invalid master token', async () => {
-    await expect(svc.register('u', 'p', 'bad')).rejects.toThrow('Invalid master token')
+    await expect(svc.register('u', 'p', 'G', 'bad')).rejects.toThrow('Invalid master token')
   })
 
   it('login - invalid credentials', async () => {
@@ -67,7 +73,7 @@ describe('AuthService', () => {
   })
 
   it('login - success returns tokens when refresh exists', async () => {
-    const user = { id: '1', username: 'u', password: 'hash' }
+    const user = { id: '1', username: 'u', password: 'hash', greetname: 'G' }
     ;(mockPrisma.user.findUnique as jest.Mock).mockResolvedValue(user)
     // korzystamy z zamockowanego bcrypt.compare
     ;(bcrypt.compare as unknown as jest.Mock).mockResolvedValue(true)
@@ -84,6 +90,32 @@ describe('AuthService', () => {
     const out = await svc.login('u', 'p')
     expect(out.accessToken).toBe('at')
     expect(out.refreshToken).toBe('rt')
+    expect(out.greetname).toBe('G')
+  })
+
+  it('login - creates refresh token when none exists', async () => {
+    const user = { id: '2', username: 'v', password: 'hash2', greetname: 'V' }
+    ;(mockPrisma.user.findUnique as jest.Mock).mockResolvedValue(user)
+    ;(bcrypt.compare as unknown as jest.Mock).mockResolvedValue(true)
+
+    // brak refresh tokena w bazie
+    ;(mockPrisma.refreshToken.findFirst as jest.Mock).mockResolvedValue(null)
+    // przy tworzeniu zwracamy obiekt z tokenem
+    ;(mockPrisma.refreshToken.create as jest.Mock).mockResolvedValue({
+      token: 'rt-created',
+      userId: '2',
+      revoked: false,
+      expiresAt: new Date(Date.now() + 1000),
+    })
+    ;(mockJwt.sign as jest.Mock).mockImplementation(() => 'signed-token')
+
+    const out = await svc.login('v', 'p')
+
+    // oczekujemy, że utworzono refresh token i zwrócono access + refresh + greetname
+    expect(mockPrisma.refreshToken.create).toHaveBeenCalled()
+    expect(out.accessToken).toBe('signed-token')
+    expect(out.refreshToken).toBe('rt-created')
+    expect(out.greetname).toBe('V')
   })
 
   it('refresh - missing token throws', async () => {

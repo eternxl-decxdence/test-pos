@@ -56,7 +56,8 @@ export class AuthService {
     })
 
     if (!refreshToken) {
-      await this.prisma.refreshToken.create({
+      // PL: jeśli refresh token nie istnieje, tworzymy go i przypisujemy zmiennej
+      refreshToken = await this.prisma.refreshToken.create({
         data: {
           userId: user.id,
           token: this.JwtService.sign(

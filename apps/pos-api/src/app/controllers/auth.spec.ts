@@ -17,9 +17,9 @@ describe('AuthController', () => {
   it('register delegates to service', async () => {
     mockService.register.mockResolvedValue({ ok: true })
     await expect(
-      ctrl.register({ username: 'u', password: 'p', masterToken: 'm' }),
+      ctrl.register({ username: 'u', password: 'p', masterToken: 'm', greetname: 'n' }),
     ).resolves.toEqual({ ok: true })
-    expect(mockService.register).toHaveBeenCalledWith('u', 'p', 'm')
+    expect(mockService.register).toHaveBeenCalledWith('u', 'p', 'n', 'm')
   })
 
   it('login sets cookie and returns accessToken', async () => {

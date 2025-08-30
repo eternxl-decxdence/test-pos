@@ -19,6 +19,7 @@ model User {
   username     String  @unique
   password     String
   refreshToken RefreshToken[]
+  
 }
 
 model Product {
@@ -66,4 +67,12 @@ model RefreshToken {
   createdAt DateTime @default(now())
   revoked   Boolean  @default(false)
   user      User     @relation(fields:[userId], references: [id])
+}
+
+model Shift {
+  id String @id @default(uuid())
+  cashStart Decimal @default(300) @db.Decimal(10,2)
+  cashEnd Decimal? @db.Decimal(10,2)
+  openedAt DateTime @default(now())
+  closedAt DateTime?
 }
