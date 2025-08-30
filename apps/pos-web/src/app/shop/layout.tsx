@@ -2,6 +2,7 @@ import DateTimeWidget from '@components/client/DateTimeWidget/DateTimeWidget.com
 import { ReactComponent as Logo } from '@assets/cool-pos-logo.svg'
 import { ReactNode } from 'react'
 import NavBar from '@components/client/NavBar/NavBar.component'
+
 export default function ShopLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex w-screen h-screen flex-col bg-sky-200">

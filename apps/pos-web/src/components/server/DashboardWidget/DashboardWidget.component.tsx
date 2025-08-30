@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import { ReactNode } from 'react'
+import config from './DashboardWidget.config'
 
 export default function DashboardWidget({
   children,
@@ -11,14 +12,13 @@ export default function DashboardWidget({
   auxClassNames?: string
 }) {
   return (
-    <div
-      className={clsx(
-        auxClassNames,
-        'outline-1 flex flex-col gap-1 outline-sky-500 rounded-md bg-sky-50 shadow-xl p-2',
+    <div className={clsx(auxClassNames, config.logic.composeStyles('container'))}>
+      {title && (
+        <>
+          <span className={config.logic.composeStyles('title')}>{title}</span>
+          <div className={config.logic.composeStyles('separator')} />
+        </>
       )}
-    >
-      <span className="text-xs font-poppins leading-none">{title}</span>
-      <div className="w-full h-px bg-slate-500 rounded-full" />
       {children}
     </div>
   )
