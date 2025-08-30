@@ -11,7 +11,6 @@ async function bootstrap() {
     credentials: true,
   })
   app.setGlobalPrefix(globalPrefix)
-
   const port = process.env.PORT || 3000
   await app.listen(port)
 

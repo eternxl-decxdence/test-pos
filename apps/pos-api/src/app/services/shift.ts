@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { Prisma, PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 @Injectable()
 export class ShiftService {
@@ -22,6 +22,16 @@ export class ShiftService {
       data: {
         cashEnd: cashEnd,
         closedAt: new Date(),
+      },
+    })
+  }
+  async get(day: string) {
+    const date = new Date(day + 'T00:00:00.000Z')
+    console.log(date)
+    return this.prisma.shift.findFirst({
+      where: { openedAt: { lt: date } },
+      orderBy: {
+        openedAt: 'desc',
       },
     })
   }

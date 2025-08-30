@@ -11,6 +11,7 @@ describe('ShiftService', () => {
       shift: {
         create: jest.fn(),
         findUnique: jest.fn(),
+        findFirst: jest.fn(),
         update: jest.fn(),
       },
     } as unknown as PrismaClient
@@ -54,5 +55,22 @@ describe('ShiftService', () => {
       data: { cashEnd: 200, closedAt: expect.any(Date) },
     })
     expect(res).toEqual({ id: 'id', cashEnd: 200, closedAt: expect.any(Date) })
+  })
+
+  it('get - returns shift for given day', async () => {
+    const day = '2025-08-20'
+    const expectedDate = new Date(day + 'T00:00:00.000Z')
+    const result = { id: 's2', openedAt: new Date() }
+    ;(mockPrisma.shift.findFirst as jest.Mock).mockResolvedValue(result)
+
+    const out = await svc.get(day)
+
+    // Проверяем, что findFirst был вызван с правильными параметрами
+    expect(mockPrisma.shift.findFirst).toHaveBeenCalled()
+    const callArg = (mockPrisma.shift.findFirst as jest.Mock).mock.calls[0][0]
+    expect(callArg.orderBy).toEqual({ openedAt: 'desc' })
+    // сравниваем время в миллисекундах
+    expect(callArg.where.openedAt.lt.getTime()).toBe(expectedDate.getTime())
+    expect(out).toBe(result)
   })
 })
