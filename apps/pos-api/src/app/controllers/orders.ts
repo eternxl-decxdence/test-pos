@@ -14,9 +14,9 @@ export class OrderController {
   // Endpoint POST /orders/sync
   // Synchronizuje lokalne zamówienia z zewnętrznym API (np. pobiera koszyki z serwisu)
   // Zwraca wynik operacji synchronizacji z serwisu.
-  @Post('/sync')
+  @Post('/imports')
   async syncOrders() {
-    return this.orderService.syncOrders()
+    return await this.orderService.syncOrders()
   }
 
   // Endpoint POST /orders
@@ -25,7 +25,7 @@ export class OrderController {
   // Metoda jest pusta w oryginale - implementacja biznesowa znajduje się w OrderService.
   @Post()
   async addOrder(@Body() body: { items: { product: string, quantity: number, price: number }[], cashAmount?: number, cardAmount?: number }) {
-
+    return await this.orderService.addOrder(body.items, body.cashAmount, body.cardAmount)
   }
 
   // Endpoint GET /orders
@@ -33,8 +33,8 @@ export class OrderController {
   // Serwis zwraca pola typu Prisma.Decimal dla cashAmount i cardAmount - tutaj konwertujemy je na number
   // aby frontend otrzymał zwykłe liczby.
   @Get()
-  async getOrders(@Query('limit') limit, @Query('offset') offset, @Query('date') date, @Body() body: { category: string, product: string }) {
-    const orders = await this.orderService.getOrders(limit, offset, date, body.category, body.product)
+  async getOrders(@Query('limit') limit?: number, @Query('offset') offset?: number, @Query('date') date?: string, @Query('category') category?: string, @Query('product') product?: string) {
+    const orders = await this.orderService.getOrders(limit, offset, date, category, product)
     return orders.map((order) => { return { ...order, cashAmount: order.cashAmount.toNumber(), cardAmount: order.cardAmount.toNumber() } })
   }
 }

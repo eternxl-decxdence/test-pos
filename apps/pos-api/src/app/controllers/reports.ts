@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Body, Controller, Get, Param, Query } from "@nestjs/common";
 import { ReportService } from "@services/reports";
 
 
@@ -8,10 +8,10 @@ export class ReportController {
 
   @Get(':date')
   async getFullReport(@Param('date') date: string) {
-    return this.reportService.getFullReport(date)
+    return await this.reportService.getFullReport(date)
   }
-  @Get(':dateFrom/:dateTo')
-  async getShortReports(@Param('dateFrom') dateFrom: string, @Param('DateTo') dateTo: string) {
-    return this.reportService.getReports(dateFrom, dateTo)
+  @Get()
+  async getShortReports(@Query('from') dateFrom: string, @Query('to') dateTo: string) {
+    return await this.reportService.getReports(dateFrom, dateTo)
   }
 }

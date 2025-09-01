@@ -8,6 +8,7 @@ import '@fontsource/poppins/600.css'
 import '@fontsource/poppins/700.css'
 import '@fontsource/poppins/800.css'
 import '@fontsource/poppins/900.css'
+
 import Providers from '@components/client/Providers/Providers.component'
 export const metadata = {
   title: 'COOL POS',
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <Providers>{children}</Providers>
+        <div id="portal-root" />
       </body>
     </html>
   )

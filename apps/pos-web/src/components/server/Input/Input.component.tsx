@@ -3,8 +3,9 @@ import config from './Input.config'
 
 export default function Input({
   variant = 'default',
-
   inputType = 'text',
+  defaultValue,
+  value,
   placeholder,
   inputName,
   label,
@@ -14,6 +15,8 @@ export default function Input({
     <div className={config.logic.composeStyles('box')}>
       <label htmlFor={inputName}>{label}</label>
       <input
+        defaultValue={defaultValue}
+        value={value}
         onChange={handleChange}
         autoComplete={inputName}
         type={inputType}

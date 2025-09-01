@@ -5,6 +5,6 @@ export interface IButton {
   icon: ReactNode
   disabled: boolean
   auxClassNames: string
-  action: () => any
+  action: (...args: any[]) => any
   submit: boolean
 }

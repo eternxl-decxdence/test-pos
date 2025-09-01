@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, Delete, Patch, Query } from '@nestjs/common'
+import { Body, Controller, Post, Get, Delete, Patch, Query, Param } from '@nestjs/common'
 import { ProductsService } from '@services/products'
 
 // PL: Kontroler produktów — obsługuje endpointy CRUD dla produktów
@@ -10,9 +10,9 @@ export class ProductsController {
 
   // PL: Synchronizuje produkty z zewnętrznego serwisu i zapisuje/aktualizuje wpisy w bazie.
   // PL: Nie przyjmuje danych w ciele żądania — wyzwala proces serwisowy i zwraca wynik operacji.
-  @Post('/sync')
+  @Post('/imports')
   async sync() {
-    return this.productsService.syncProducts()
+    return await this.productsService.syncProducts()
   }
 
   // PL: Tworzy nowy produkt.
@@ -44,29 +44,30 @@ export class ProductsController {
   // PL: Dla każdego produktu konwertuje `price` z Prisma.Decimal do liczby przed zwróceniem.
   @Get()
   async getProducts(
-    @Query('limit') limit,
-    @Query('offset') offset,
-    @Body() body: { category?: string; name?: string },
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+    @Query('category') category?: string,
+    @Query('name') name?: string,
   ) {
-    const products = await this.productsService.getProducts(body.category, limit, offset, body.name)
+    const products = await this.productsService.getProducts(category, limit, offset, name)
     return products.map((product) => ({ ...product, price: product.price.toNumber() }))
   }
 
   // PL: Usuwa produkt o podanym `productId` (w body). Zwraca usunięty rekord z przekonwertowaną ceną.
-  @Delete()
-  async deleteProduct(@Body() body: { productId: string }) {
-    const product = await this.productsService.deleteProduct(body.productId)
+  @Delete(':productId')
+  async deleteProduct(@Param('productId') productId: string) {
+    const product = await this.productsService.deleteProduct(productId)
     return { ...product, price: product.price.toNumber() }
   }
 
   // PL: Aktualizuje istniejący produkt. W body przekazujemy productId oraz obiekt `changes` z możliwymi polami do zmiany.
   // PL: W przypadku aktualizacji kategorii lub obrazu, kontroler oczekuje obiektu z polem `new` wskazującym czy stworzyć nowy wpis.
   // PL: Zwraca zaktualizowany produkt z `price` przekonwertowanym na liczbę.
-  @Patch()
+  @Patch(':productId')
   async changeProduct(
+    @Query('productId') productId: string,
     @Body()
     body: {
-      productId: string
       changes: {
         name?: string
         image?: { new: boolean; descriptor: string }
@@ -76,7 +77,7 @@ export class ProductsController {
       }
     },
   ) {
-    const product = await this.productsService.changeProduct(body.productId, body.changes)
+    const product = await this.productsService.changeProduct(productId, body.changes)
     return { ...product, price: product.price.toNumber() }
   }
 }

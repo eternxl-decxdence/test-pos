@@ -43,7 +43,7 @@ export class OrderService {
         const orderProducts = await Promise.all(
           cart.products.map(async (op) => {
             // Szukamy produktu po externalId; jeśli nie istnieje, rzucamy NotFoundException
-            const product = await prisma.product.findUniqueOrThrow({
+            const product = await prisma.product.findUnique({
               where: { externalId: op.productId.toString() },
             },).catch(() => { throw new NotFoundException(`Product with externalId ${op.productId} not found OP:${JSON.stringify(op)} Cart:${JSON.stringify(cart)}`) });
             if (!product) {

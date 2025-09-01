@@ -18,26 +18,27 @@ const config = createConfig({
   },
   logic: {
     getDayVerbose: (day: number): string => {
-      return day - 1 < 7
+      return day - 1 <= 6
         ? ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'][day - 1]
         : 'null'
     },
     getMonthVerbose: (month: number): string => {
-      return month - 1 < 7
+
+      return month - 1 <= 11
         ? [
-            'Styczeń',
-            'Luty',
-            'Marzec',
-            'Kwiecień',
-            'Maj',
-            'Czerwiec',
-            'Lipiec',
-            'Sierpień',
-            'Wrzesień',
-            'Październik',
-            'Listopad',
-            'Grudzień',
-          ][month - 1]
+          'Styczeń',
+          'Luty',
+          'Marzec',
+          'Kwiecień',
+          'Maj',
+          'Czerwiec',
+          'Lipiec',
+          'Sierpień',
+          'Wrzesień',
+          'Październik',
+          'Listopad',
+          'Grudzień',
+        ][month]
         : 'null'
     },
   },

@@ -30,12 +30,12 @@
         "production": {
           "buildTarget": "pos-web:build:production",
           "dev": false,
-          "port": 4200
+          "port": 9080
         },
         "development": {
           "buildTarget": "pos-web:build",
           "dev": true,
-          "port": 4200
+          "port": 9080
         }
       }
     },

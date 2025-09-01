@@ -1,24 +1,23 @@
 // Kontroler odpowiedzialny za endpointy /auth (register, login, refresh)
 // Endpointy oznaczone dekoratorem @Public() są pomijane przez JwtAuthGuard
-import { Controller, Post, Res, Body } from '@nestjs/common'
-import { Response } from 'express'
+import { Controller, Post, Res, Body, Req } from '@nestjs/common'
+import { Request, Response } from 'express'
 import { AuthService } from '@services/auth'
 import { Public } from 'app/decorators/public'
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @Public()
   @Post('register')
-  async register(@Body() body: { username; password; greetname; masterToken }) {
-    // Delegujemy logikę rejestracji do serwisu
-    return this.authService.register(body.username, body.password, body.greetname, body.masterToken)
+  async register(@Body() body: { username: string; password: string; greetname: string; masterToken: string }) {
+    return await this.authService.register(body.username, body.password, body.greetname, body.masterToken)
   }
 
   @Public()
   @Post('login')
-  async login(@Res({ passthrough: true }) res: Response, @Body() body: { username; password }) {
+  async login(@Res({ passthrough: true }) res: Response, @Body() body: { username: string; password: string }) {
     // Po poprawnym loginie ustawiamy cookie z refresh tokenem oraz zwracamy access token
     const { accessToken, refreshToken, greetname } = await this.authService.login(
       body.username,
@@ -28,15 +27,16 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       path: '/',
-      maxAge: 7 * 24 * 60 * 60,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     })
     return { accessToken, greetname }
   }
 
   @Public()
   @Post('refresh')
-  async refreshAccessToken(@Body() body: { token; userId }) {
+  async refreshAccessToken(@Req() req: Request) {
+    const token = req.cookies['refreshToken']
     // Odświeżamy access token za pomocą refresh tokena
-    return this.authService.refresh(body.token)
+    return await this.authService.refresh(token)
   }
 }

@@ -13,7 +13,7 @@ import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class AuthService {
-  constructor(private JwtService: JwtService, private prisma: PrismaClient) {}
+  constructor(private jwtService: JwtService, private prisma: PrismaClient) { }
 
   // Rejestracja nowego użytkownika — wymaga master tokena do zabezpieczenia tworzenia kont
   async register(username: string, password: string, greetname: string, masterToken: string) {
@@ -60,7 +60,7 @@ export class AuthService {
       refreshToken = await this.prisma.refreshToken.create({
         data: {
           userId: user.id,
-          token: this.JwtService.sign(
+          token: this.jwtService.sign(
             { sub: user.id },
             { secret: process.env.REFRESH_SECRET, expiresIn: '7d' },
           ),
@@ -69,7 +69,7 @@ export class AuthService {
       })
     }
 
-    const accessToken = this.JwtService.sign({ sub: user.id })
+    const accessToken = this.jwtService.sign({ sub: user.id })
     return { accessToken, greetname: user.greetname, refreshToken: refreshToken.token }
   }
 
@@ -82,6 +82,6 @@ export class AuthService {
     if (storedToken.revoked) throw new ForbiddenException('Refresh token revoked')
     if (storedToken.expiresAt < new Date()) throw new ForbiddenException('Refresh token expired')
 
-    return { accessToken: this.JwtService.sign({ sub: storedToken.userId }) }
+    return { accessToken: this.jwtService.sign({ sub: storedToken.userId }) }
   }
 }

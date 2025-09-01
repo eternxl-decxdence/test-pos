@@ -15,6 +15,7 @@ class AuthStore {
   async refresh() {
     if (this.isRefreshing) return
     this.isRefreshing = true
+    console.log('refreshing')
     try {
       const res = await api.post('/auth/refresh', {}, { withCredentials: true })
       runInAction(() => {
