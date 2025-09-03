@@ -17,10 +17,10 @@ export const ModalProvider = observer(() => {
   if (!(mounted && element)) return null
 
   const renderContent = (content: any) => {
-    // JSX уже
+    // JSX
     if (React.isValidElement(content)) return content
 
-    // React-компонент (observer работает)
+    // React FC
     if (typeof content === 'function') {
       const C = content as React.ComponentType<any>
       try {
@@ -33,7 +33,7 @@ export const ModalProvider = observer(() => {
     // fallback: string/number
     if (typeof content === 'string' || typeof content === 'number') return <div>{content}</div>
 
-    return <div className="p-4 text-red-600">Invalid modal content</div>
+    return <div className="p-4 text-rose-600">Invalid modal content</div>
   }
 
   return createPortal(

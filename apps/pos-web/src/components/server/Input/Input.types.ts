@@ -4,8 +4,8 @@ export interface IInput {
   inputName: string
   label: string
   variant: 'default' | 'error'
-  defaultValue: number,
+  defaultValue: number
   value: string
-
+  auxClassNames: string
   handleChange: (...args: any[]) => any
 }

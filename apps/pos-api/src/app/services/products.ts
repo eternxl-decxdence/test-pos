@@ -59,13 +59,24 @@ export class ProductsService {
   // PL:  - name?: string — filtr po nazwie (insensitive contains)
   // PL: Zwraca tablicę obiektów produktu (Prisma models).
   async getProducts(category?: string, limit?: number, offset?: number, name?: string) {
-    const products = await this.prisma.product.findMany({
-      where: {
-        ...(category ? { categoryId: category } : {}),
-        ...(name ? { name: { contains: name, mode: 'insensitive' } } : {}),
-      },
-      ...(offset !== undefined ? { skip: offset } : {}),
-      ...(limit !== undefined ? { take: limit } : {}),
+    const products = await this.prisma.$transaction(async (prisma) => {
+      const productsData = await prisma.product.findMany({
+        where: {
+          ...(category ? { categoryId: category } : {}),
+          ...(name ? { name: { contains: name, mode: 'insensitive' } } : {}),
+        },
+        ...(offset !== undefined ? { skip: offset } : {}),
+        ...(limit !== undefined ? { take: limit } : {}),
+        include: { image: true, category: true },
+      })
+      const total = await prisma.product.count({
+        where: {
+          ...(category ? { categoryId: category } : {}),
+          ...(name ? { name: { contains: name, mode: 'insensitive' } } : {}),
+        }
+      })
+      const totalPages = Math.ceil(total / limit)
+      return { productsData, totalPages }
     })
     return products
   }
@@ -135,5 +146,8 @@ export class ProductsService {
         },
       })
     })
+  }
+  async getCategories() {
+    return await this.prisma.category.findMany({ select: { id: true } })
   }
 }

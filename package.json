@@ -5,6 +5,7 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "@fontsource-variable/roboto-mono": "^5.2.6",
     "@fontsource/poppins": "^5.2.6",
     "@nestjs/common": "^11.1.6",
     "@nestjs/config": "^4.0.2",

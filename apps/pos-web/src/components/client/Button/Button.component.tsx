@@ -39,7 +39,7 @@ export default function Button({
         type={submit ? 'submit' : 'button'}
         onClick={onClickAnimation}
         disabled={disabled}
-        className={clsx(config.logic.composeStyles('button'), auxClassNames)}
+        className={clsx(auxClassNames, config.logic.composeStyles('button'))}
       >
         {icon}
         {label}

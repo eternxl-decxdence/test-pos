@@ -8,6 +8,7 @@ import '@fontsource/poppins/600.css'
 import '@fontsource/poppins/700.css'
 import '@fontsource/poppins/800.css'
 import '@fontsource/poppins/900.css'
+import '@fontsource-variable/roboto-mono'
 
 import Providers from '@components/client/Providers/Providers.component'
 export const metadata = {

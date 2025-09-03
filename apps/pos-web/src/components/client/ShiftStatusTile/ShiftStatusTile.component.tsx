@@ -5,17 +5,18 @@ import { useShift } from '@utils/hooks/useShift'
 import { shiftStore } from '@store/ShiftStore'
 import { modalStore } from '@store/ModalStore'
 import { observer } from 'mobx-react'
-import { useEffect, useState, FormEvent } from 'react'
+import { useEffect, FormEvent } from 'react'
 import CashInputModal from '../CashInputModal/CashInputModal.component'
 import ShiftTimer from '../ShiftTimer/ShiftTimer.component'
+import config from './ShiftStatusTile.config'
 
 const ShiftStatusTile = observer(() => {
-  const { start, end, get } = useShift()
+  const shift = useShift()
   useEffect(() => {}, [])
   useEffect(() => {
     const todayDate = new Date()
     const yesterdayDate = new Date(todayDate.setDate(todayDate.getDate() - 1))
-    get.mutate(
+    shift.get.mutate(
       { date: yesterdayDate.toJSON().split('T')[0] },
       {
         onSuccess: (data) => {
@@ -38,11 +39,11 @@ const ShiftStatusTile = observer(() => {
     shiftStore.setCash(cash)
     if (shiftStore.isStarted) {
       modalStore.hide('cash')
-      end.mutate({ shiftId: shiftStore.shiftId!, cashEnd: cash })
+      shift.end.mutate({ shiftId: shiftStore.shiftId!, cashEnd: cash })
       shiftStore.endShift()
     } else {
       modalStore.hide('cash')
-      start.mutate(
+      shift.start.mutate(
         { cashStart: shiftStore.cash! },
         {
           onSuccess: (data) => {
@@ -54,16 +55,18 @@ const ShiftStatusTile = observer(() => {
   }
   return (
     <DashboardWidget title="Zmiana">
-      <div className="flex w-full h-full flex-col gap-2 justify-end">
-        <span className="font flex flex-row justify-between font-poppins text-xs text-slate-800">
+      <div className={config.logic.composeStyles('inside-container')}>
+        <span className={config.logic.composeStyles('shift-timer')}>
           Stan kasy: {shiftStore.cash ? shiftStore.cash : 'N/A'}
           <ShiftTimer />
         </span>
-        <Button
-          action={handleClick}
-          label={!shiftStore.isStarted ? 'Rozpocznij zmianę' : 'Zakończ zmianę'}
-          auxClassNames="w-full h-12"
-        />
+        <div className={config.logic.composeStyles('button-container')}>
+          <Button
+            action={handleClick}
+            label={!shiftStore.isStarted ? 'Rozpocznij zmianę' : 'Zakończ zmianę'}
+            auxClassNames="px-4 py-2"
+          />
+        </div>
       </div>
     </DashboardWidget>
   )

@@ -8,12 +8,12 @@ export const config = createConfig({
         layout: 'font-poppins flex z-10  flex-row items-center justify-center gap-2  ',
         animation: 'transition-color duration-100',
         colors: 'font-medium bg-sky-500 text-sky-50 hover:bg-sky-300',
-        sizing: 'text-sm 2xl:text-base rounded-md w-full',
+        sizing: 'text-sm 2xl:text-base  rounded-md ',
       },
     },
     'outline-div': {
       styles: {
-        layout: 'flex relative flex-col w-full items-end justify-center',
+        layout: 'flex relative flex-col w-fit items-end justify-center',
         animation: 'transition-all duration-100',
         colors: 'bg-sky-300',
         sizing: 'pb-0.5 hover:pb-0 hover:mt-0.5 rounded-md',
@@ -21,7 +21,7 @@ export const config = createConfig({
     },
     'ripple-effect': {
       styles: {
-        layout: 'absolute w-full h-full inset-0 z-0 pointer-events-none',
+        layout: 'absolute h-full inset-0 z-0 pointer-events-none',
         colors: 'bg-slate-500',
         sizing: 'rounded-md',
       },
