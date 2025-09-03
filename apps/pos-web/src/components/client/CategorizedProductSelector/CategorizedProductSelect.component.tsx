@@ -36,7 +36,7 @@ const CategorizedProductSelect = observer(({ categoryId }: { categoryId: string 
   )
 
   const pagePrev = useCallback(
-    () => (page.current > 0 ? setPage({ ...page, current: page.current + 1 }) : null),
+    () => (page.current > 0 ? setPage({ ...page, current: page.current - 1 }) : null),
     [page],
   )
 

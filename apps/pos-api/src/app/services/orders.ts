@@ -118,15 +118,23 @@ export class OrderService {
       });
 
       await Promise.all(
-        items.map((item) =>
-          prisma.orderProduct.create({
+        items.map(async (item) => {
+          await prisma.product.update({
+            where: { id: item.product }, data: {
+              quantity: {
+                decrement: item.quantity
+              }
+            }
+          })
+          await prisma.orderProduct.create({
             data: {
               orderId: order.id,
               productId: item.product,
               quantity: item.quantity,
               price: new Prisma.Decimal(item.price),
             },
-          }),
+          })
+        }
         ),
       );
 
