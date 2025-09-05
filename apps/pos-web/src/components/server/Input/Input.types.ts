@@ -1,5 +1,5 @@
 export interface IInput {
-  inputType: 'text' | 'password'
+  inputType: 'text' | 'password' | 'number'
   placeholder: string
   inputName: string
   label: string

@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMinus, faShoppingBasket } from '@fortawesome/free-solid-svg-icons'
 import Button from '../Button/Button.component'
 import { useRouter } from 'next/navigation'
+import { checkoutStore } from '@store/CheckoutStore'
 const Cart = observer(() => {
   const router = useRouter()
   if (cartStore.mainCart.size > 0)
@@ -39,7 +40,10 @@ const Cart = observer(() => {
             })}
           </div>
           <Button
-            action={() => router.push('./sell/checkout')}
+            action={() => {
+              checkoutStore.proceedToPayment()
+              router.push('./sell/checkout')
+            }}
             label="Suma"
             auxClassNames="px-38 py-4"
           />

@@ -5,10 +5,10 @@ export const config = createConfig({
   elements: {
     button: {
       styles: {
-        layout: 'font-poppins flex z-10  flex-row items-center justify-center gap-2  ',
+        layout: 'whitespace-nowrap font-poppins flex z-10  flex-row items-center justify-center gap-2  ',
         animation: 'transition-color duration-100',
         colors: 'font-medium bg-sky-500 text-sky-50 hover:bg-sky-300',
-        sizing: 'text-sm 2xl:text-base  rounded-md ',
+        sizing: 'text-xs 2xl:text-base  rounded-md ',
       },
     },
     'outline-div': {

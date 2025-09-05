@@ -16,7 +16,10 @@ export default function Button({
 }: Partial<IButton>) {
   const [ripple, setRipple] = useState(false)
   function onClickAnimation() {
-    if (!ripple) setRipple(true)
+    if (!ripple) {
+      setRipple(true)
+      action?.()
+    }
   }
   return (
     <div className={config.logic.composeStyles('outline-div')}>
@@ -30,14 +33,16 @@ export default function Button({
             className={config.logic.composeStyles('ripple-effect')}
             onAnimationComplete={() => {
               setRipple(false)
-              action?.()
             }}
           />
         )}
       </AnimatePresence>
       <button
         type={submit ? 'submit' : 'button'}
-        onClick={onClickAnimation}
+        onClick={(e) => {
+          if (submit) e.preventDefault()
+          onClickAnimation()
+        }}
         disabled={disabled}
         className={clsx(auxClassNames, config.logic.composeStyles('button'))}
       >

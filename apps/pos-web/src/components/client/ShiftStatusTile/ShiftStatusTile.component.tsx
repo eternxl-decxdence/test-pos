@@ -64,7 +64,7 @@ const ShiftStatusTile = observer(() => {
           <Button
             action={handleClick}
             label={!shiftStore.isStarted ? 'Rozpocznij zmianę' : 'Zakończ zmianę'}
-            auxClassNames="px-4 py-2"
+            auxClassNames="px-20 py-2"
           />
         </div>
       </div>

@@ -63,7 +63,7 @@ const LoginForm = observer(() => {
         inputName="password"
         inputType="password"
       />
-      <Button submit label="Zaloguj się" auxClassNames="px-16 py-1.5" />
+      <Button submit label="Zaloguj się" auxClassNames="w-56 h-10" />
       {errorStatus && (
         <span className={config.logic.composeStyles('error-message')}>{errorStatus}</span>
       )}

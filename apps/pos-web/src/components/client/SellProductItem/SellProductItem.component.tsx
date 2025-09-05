@@ -15,7 +15,7 @@ const SellProductItem = observer(({ product }: { product: CategorizedProduct }) 
       const newValue = typeof e === 'number' ? e : Number(e.currentTarget.value)
       if (!Number.isNaN(newValue)) {
         setQty(newValue)
-        cartStore.addToTempCart(product.name, newValue, product.price)
+        cartStore.addToTempCart(product.name, product.id, newValue, product.price)
       }
     },
     [product.id, product.price],

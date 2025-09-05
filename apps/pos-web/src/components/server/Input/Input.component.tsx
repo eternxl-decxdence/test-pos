@@ -22,6 +22,7 @@ const Input = forwardRef<HTMLInputElement, Partial<IInput>>(
       <div className={config.logic.composeStyles('box')}>
         <label htmlFor={inputName}>{label}</label>
         <input
+          step={inputType === 'number' ? '0.01' : undefined}
           ref={ref}
           defaultValue={defaultValue}
           value={value}

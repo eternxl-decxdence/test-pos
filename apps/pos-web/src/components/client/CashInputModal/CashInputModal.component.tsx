@@ -22,7 +22,7 @@ const CashInputModal = observer(
           defaultValue={shiftStore.cash ? shiftStore.cash : 300.0}
           placeholder={shiftStore.cash ? shiftStore.cash.toString() : '300.0'}
         />
-        <Button submit label="Wyślij" auxClassNames="p-2"></Button>
+        <Button submit label="Wyślij" auxClassNames="px-21 py-2"></Button>
       </motion.form>
     )
   },

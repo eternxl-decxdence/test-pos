@@ -1,18 +1,15 @@
 import { makeAutoObservable, observable } from "mobx";
 
-
-
-
 class CartStore {
-  tempCart = observable.map<string, { quantity: number, price: number }>()
-  mainCart = observable.map<string, { quantity: number, price: number }>()
+  tempCart = observable.map<string, { quantity: number, price: number, productId: string }>()
+  mainCart = observable.map<string, { quantity: number, price: number, productId: string }>()
 
   constructor() {
     makeAutoObservable(this)
   }
 
-  addToTempCart(productId: string, quantity: number, price: number) {
-    if (quantity > 0) this.tempCart.set(productId, { quantity, price })
+  addToTempCart(productName: string, productId: string, quantity: number, price: number) {
+    if (quantity > 0) this.tempCart.set(productName, { quantity, price, productId })
   }
 
   pushTempCartToMain() {
@@ -20,6 +17,10 @@ class CartStore {
       this.mainCart.set(key, value)
     })
     this.tempCart.clear()
+  }
+  clear() {
+    this.tempCart.clear()
+    this.mainCart.clear()
   }
 }
 export const cartStore = new CartStore()
