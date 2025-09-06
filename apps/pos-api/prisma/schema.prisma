@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String         @id @default(uuid())
+  greetname    String
+  username     String         @unique
+  password     String
+  refreshToken RefreshToken[]
+}
+
+model Product {
+  id         String         @id @default(uuid())
+  externalId String?        @unique
+  categoryId String
+  imageId    String
+  name       String
+  quantity   Int
+  price      Decimal        @db.Decimal(10, 2)
+  category   Category       @relation(fields: [categoryId], references: [id])
+  image      Image          @relation(fields: [imageId], references: [id])
+  orders     OrderProduct[]
+}
+
+model Category {
+  id           String    @id @default(uuid())
+  categoryName String    @unique
+  products     Product[]
+}
+
+model Image {
+  id       String    @id @default(uuid())
+  link     String
+  products Product[]
+}
+
+model Order {
+  id         String         @id @default(uuid())
+  externalId String?        @unique
+  date       DateTime       @default(now())
+  cashAmount Decimal        @default(0) @db.Decimal(10, 2)
+  cardAmount Decimal        @default(0) @db.Decimal(10, 2)
+  products   OrderProduct[]
+}
+
+model OrderProduct {
+  id         String  @id @default(uuid())
+  orderId    String
+  externalId String?
+  productId  String
+  quantity   Int
+  price      Decimal @db.Decimal(10, 2)
+  order      Order   @relation(fields: [orderId], references: [id])
+  product    Product @relation(fields: [productId], references: [id])
+
+  @@unique([orderId, productId, quantity, price])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  revoked   Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Shift {
+  id        String    @id @default(uuid())
+  cashStart Decimal   @default(300) @db.Decimal(10, 2)
+  cashEnd   Decimal?  @db.Decimal(10, 2)
+  openedAt  DateTime  @default(now())
+  closedAt  DateTime?
+}
