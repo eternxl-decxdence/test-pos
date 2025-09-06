@@ -5,8 +5,10 @@ POS-klient, zaprojektowany do użycia w sklepie stacjonarnym
 Stack Technologii 
 
 Frontend - Next.js + Tailwind CSS + Tanstack Query
+
 Backend - NestJS + Prisma ORM + PostgreSQL
 
+Do zarządzania monorepo jest używany NX
 
 Uruchomienie frontendu
 ```sh
