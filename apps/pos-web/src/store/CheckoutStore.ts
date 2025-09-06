@@ -17,6 +17,12 @@ class CheckoutStore {
       0,
     )
   }
+  reset() {
+    this.atCheckout = false
+    this.payment = 0
+    this.card = 0
+    this.cash = 0
+  }
   payWithCard(amount: number) {
     if (!amount) {
       this.card += this.payment

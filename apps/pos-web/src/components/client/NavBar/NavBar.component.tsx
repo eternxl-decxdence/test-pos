@@ -18,7 +18,6 @@ export default function NavBar() {
     { icon: faHouse, label: 'Główna', link: '/dashboard' },
     { icon: faCashRegister, label: 'Sprzedaż', link: '/sell' },
     { icon: faCartArrowDown, label: 'Towary', link: '/products' },
-    { icon: faChartSimple, label: 'Raporty', link: '/reports' },
   ]
   const baseURL = '/shop'
 

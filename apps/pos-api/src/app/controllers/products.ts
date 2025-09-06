@@ -10,7 +10,7 @@ export class ProductsController {
 
   // PL: Synchronizuje produkty z zewnętrznego serwisu i zapisuje/aktualizuje wpisy w bazie.
   // PL: Nie przyjmuje danych w ciele żądania — wyzwala proces serwisowy i zwraca wynik operacji.
-  @Post('/sync')
+  @Post('/imports')
   async sync() {
     return this.productsService.syncProducts()
   }

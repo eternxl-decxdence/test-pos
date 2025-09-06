@@ -9,9 +9,11 @@ import { useEffect, useState } from 'react'
 import { cartStore } from '@store/CartStore'
 import { checkoutStore } from '@store/CheckoutStore'
 import { useAddOrder, OrderItem } from '@utils/hooks/useOrder'
+import { useRouter } from 'next/navigation'
 
 const CheckoutControls = observer(() => {
   const addOrder = useAddOrder()
+  const router = useRouter()
 
   useEffect(() => {
     if (checkoutStore.payment <= 0 && checkoutStore.atCheckout) {
@@ -28,6 +30,9 @@ const CheckoutControls = observer(() => {
         {
           onSuccess: (res) => {
             console.log('Order created', res)
+            checkoutStore.reset()
+            cartStore.clear()
+            router.push('/shop/sell')
           },
         },
       )

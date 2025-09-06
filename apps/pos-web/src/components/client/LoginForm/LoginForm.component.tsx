@@ -9,9 +9,11 @@ import { FormEvent, useState } from 'react'
 import { observer } from 'mobx-react'
 import { authStore } from '@store/AuthStore'
 import { userStore } from '@store/UserStore'
+import { useProduct } from '@utils/hooks/useProduct'
 const LoginForm = observer(() => {
   const router = useRouter()
   const login = useLogin()
+  const { importProducts } = useProduct()
 
   const [credentials, setCredentials] = useState<{ username: string; password: string }>({
     username: '',
@@ -19,13 +21,18 @@ const LoginForm = observer(() => {
   })
   const [errorStatus, setErrorStatus] = useState<string>('')
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    console.log('form submitted')
     e.preventDefault()
+    console.log('loggin in')
     if (credentials.username !== '' && credentials.password !== '') {
+      console.log('loggin in with cred')
       login.mutate(
         { username: credentials.username, password: credentials.password },
         {
           onSuccess: (data) => {
+            importProducts.mutate()
+            console.log('got access')
             authStore.setAccessToken(data.accessToken)
             userStore.setGreet(data.greetname)
             router.push('/shop/dashboard')

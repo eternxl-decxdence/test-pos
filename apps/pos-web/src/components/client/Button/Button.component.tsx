@@ -40,7 +40,6 @@ export default function Button({
       <button
         type={submit ? 'submit' : 'button'}
         onClick={(e) => {
-          if (submit) e.preventDefault()
           onClickAnimation()
         }}
         disabled={disabled}

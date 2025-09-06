@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Query } from "@nestjs/common";
+import { Controller, Get, Param, Query } from "@nestjs/common";
 import { ReportService } from "@services/reports";
 
 

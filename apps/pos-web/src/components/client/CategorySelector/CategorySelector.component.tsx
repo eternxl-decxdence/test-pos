@@ -1,22 +1,19 @@
 'use client'
 import { observer } from 'mobx-react'
 import { useState, useEffect } from 'react'
-import useProduct from '@utils/hooks/useProduct'
+import { useProduct } from '@utils/hooks/useProduct'
 import CategoryCard from '../CategoryCard/CategoryCard.component'
+
 const CategorySelector = observer(() => {
-  const [categories, setCategories] = useState<string[]>([])
-  const products = useProduct()
-  useEffect(() => {
-    products.getCategories.mutate(undefined, {
-      onSuccess: (data: Array<{ id: string }>) => {
-        setCategories(data.map((chunk) => chunk.id))
-      },
-    })
-  }, [])
+  const { getCategories } = useProduct()
+
+  const { isLoading, data } = getCategories()
+  if (isLoading) return <div className="font-poppins text-xs text-slate-800">Loading..</div>
+  console.log(data)
   return (
     <>
-      {categories.map((cat) => {
-        return <CategoryCard key={cat} categoryId={cat} />
+      {data.map((category: { id: string }) => {
+        return <CategoryCard key={category.id} categoryId={category.id} />
       })}
     </>
   )
